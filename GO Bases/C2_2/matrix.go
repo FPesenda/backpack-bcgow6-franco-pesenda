@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-type Matrix struct {
+type matrix struct {
 	Heigt     int
 	Width     int
 	Data      []float64
@@ -10,7 +10,7 @@ type Matrix struct {
 	MaxValue  float64
 }
 
-func (mat *Matrix) Setter(numbers ...float64) {
+func (mat *matrix) Setter(numbers ...float64) {
 	mat.Data = numbers
 	if len(numbers) < (mat.Heigt * mat.Width) {
 		for i := 0; i < ((mat.Heigt * mat.Width) - len(numbers)); i++ {
@@ -19,29 +19,28 @@ func (mat *Matrix) Setter(numbers ...float64) {
 	}
 }
 
-func (mat Matrix) Getter() {
+func (mat matrix) Getter() {
 	for i, v := range mat.Data {
 		if i%mat.Width == 0 {
 			fmt.Println()
 		}
-		fmt.Print(v, " ")
+		fmt.Print(v, "\t ")
 	}
 	fmt.Println()
 }
 
-type MatrixFunctions interface {
-	Setter()
+type Matrix interface {
+	Setter(...float64)
 	Getter()
 }
 
-/*
-	func NewMatrix() MatrixFunctions {
-		return &Matrix{}
-	}
-*/
+func (m *matrix) NewMatrix() Matrix {
+	return &matrix{}
+}
+
 func main() {
 
-	m1 := Matrix{
+	m1 := matrix{
 		Heigt:     3,
 		Width:     3,
 		Cuadratic: true,
