@@ -11,11 +11,11 @@ import (
 )
 
 type File struct {
-	path string
+	Path string
 }
 
 func (f *File) Read() (readTickets []service.Ticket, err error) {
-	fileOpen, errOpen := os.Open(f.path)
+	fileOpen, errOpen := os.Open(f.Path)
 	if errOpen != nil {
 		err = errOpen
 	}
@@ -43,7 +43,8 @@ func (f *File) Read() (readTickets []service.Ticket, err error) {
 
 // TENGO QUE MEJORAR EL NAEJO DE ERRORES
 func (f *File) Write(ticket service.Ticket) (err error) {
-	fileOpen, errOpen := os.Open(f.path)
+	fileOpen, errOpen := os.OpenFile("./log.log", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	fmt.Println(ticket)
 	_, errWrite := fileOpen.WriteString(fmt.Sprint(
 		ticket.Id, ",",
 		ticket.Names, ",",
@@ -51,12 +52,14 @@ func (f *File) Write(ticket service.Ticket) (err error) {
 		ticket.Destination, ",",
 		ticket.Date, ",",
 		ticket.Price, ",",
+		"\n",
 	))
-	if errWrite != nil {
-		err = errWrite
-	}
 	if errOpen != nil {
 		err = errOpen
 	}
+	if errWrite != nil {
+		err = errWrite
+	}
+
 	return
 }
