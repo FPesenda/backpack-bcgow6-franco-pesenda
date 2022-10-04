@@ -1,0 +1,22 @@
+[
+    {
+        "Id":1,
+        "Stock":45,
+        "Name":"TV Philop",
+        "Color":"Black",
+        "Code":"PHP1",
+        "Price":24500.50,
+        "Publish":true,
+        "DateCreation":"20022-01-10'T'00:00:00.SSSZ"
+    },
+    {
+        "Id":2,
+        "Stock":35,
+        "Name":"PC Nvideo",
+        "Color":"White",
+        "Code":"NVD1",
+        "Price":55500.50,
+        "Publish":true,
+        "DateCreation":"20021-01-10'T'00:00:00.SSSZ"
+    }
+]

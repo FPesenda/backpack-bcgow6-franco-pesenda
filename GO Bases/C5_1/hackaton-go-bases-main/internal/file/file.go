@@ -43,7 +43,7 @@ func (f *File) Read() (readTickets []service.Ticket, err error) {
 
 // TENGO QUE MEJORAR EL NAEJO DE ERRORES
 func (f *File) Write(ticket service.Ticket) (err error) {
-	fileOpen, errOpen := os.OpenFile("./log.log", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	fileOpen, errOpen := os.OpenFile("./log.log", os.O_RDWR, 0644)
 	fmt.Println(ticket)
 	_, errWrite := fileOpen.WriteString(fmt.Sprint(
 		ticket.Id, ",",
