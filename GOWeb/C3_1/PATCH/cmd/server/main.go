@@ -16,6 +16,7 @@ func main() {
 	//CREAMOS EN EL RP UN GRUPO DE CONSULTAS
 	productsRouter := router.Group("/products")
 	{
+		productsRouter.PATCH("/:id", products.Patch())
 		productsRouter.DELETE("/:id", products.Delete())
 		productsRouter.GET("/", products.GetAll())
 		productsRouter.POST("/", products.Store())

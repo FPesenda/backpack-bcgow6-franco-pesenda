@@ -26,6 +26,44 @@ func NewProduct(serv products.Service) *Product {
 	}
 }
 
+func (prod *Product) Patch() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.Request.Header.Get("token")
+		if token != "123456" {
+			ctx.JSON(401, gin.H{
+				"error": "token inválido",
+			})
+			return
+		}
+		id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": err,
+			})
+			return
+		}
+
+		var req request
+
+		if err := ctx.ShouldBindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": err,
+			})
+			return
+		}
+
+		productTemporal, errPatch := prod.service.Patch(int(id), req.Name, req.Price)
+		if errPatch != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": errPatch,
+			})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{
+			"data": productTemporal,
+		})
+	}
+}
 func (prod *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
@@ -126,12 +164,14 @@ func (prod *Product) UpdateByID() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": err,
 			})
+			return
 		}
 
 		if request.Name == "" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "el nombre es requerido",
 			})
+			return
 		}
 		if request.Color == "" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -142,11 +182,13 @@ func (prod *Product) UpdateByID() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "el codigo es requerido",
 			})
+			return
 		}
 		if request.Price == 0 {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "el precio es requerdio",
 			})
+			return
 		}
 
 		productTemporal, err := prod.service.UpdateByID(int(id), request.Name, request.Color, request.Code, request.Price)
@@ -155,6 +197,7 @@ func (prod *Product) UpdateByID() gin.HandlerFunc {
 			ctx.JSON(http.StatusNotFound, gin.H{
 				"error": err.Error(),
 			})
+			return
 		}
 		ctx.JSON(http.StatusOK, productTemporal)
 	}
