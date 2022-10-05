@@ -1,14 +1,18 @@
-package main
+package products
 
 type service struct {
 	repository Repository
 }
 
 type Service interface {
+	GetAll() ([]products, error)
+	Save(products) (products, error)
 }
 
-func NewService() Service {
-	return &service{}
+func NewService(rep Repository) Service {
+	return &service{
+		repository: rep,
+	}
 }
 
 func main() {
@@ -30,6 +34,13 @@ func (serv *service) Save(product products) (prod products, err error) {
 		err = errLastId
 		return
 	}
+	product.Id = (lastId + 1)
 
-	prod, errGet := serv.repository.Save()
+	prod, errGet := serv.repository.Save(product)
+
+	if errGet != nil {
+		err = errLastId
+		return
+	}
+	return
 }
