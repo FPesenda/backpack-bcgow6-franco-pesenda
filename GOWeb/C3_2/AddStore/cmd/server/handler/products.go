@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GOWeb/C3_2/ProjectEnv/internal/products"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GOWeb/C3_2/AddStore/internal/products"
 	"github.com/gin-gonic/gin"
 )
 
