@@ -1,0 +1,23 @@
+Ejercicio 1 
+¿Cuáles son las diferencias entre White Box y Black Box? 
+
+Las técnicas de caja negra están planteadas desde la perspectiva de un usuario final ya que no tienen conocimiento del código y el funcionamiento puntual de la "funcionalidad" a sestear, mientras que en las técnicas de caja blanca se conoce el código y el funcionamiento técnico de la funcionalidad.
+
+Ejercicio 2
+¿Qué es un test funcional?.
+
+Son test que comprueban el funcionamiento de la aplicación en su totalidad, ingresando los datos que requiera y comprobando que la salida producida es la esperada, este test se realiza posteriormente a la realización de test unitarios y de integración. 
+
+Ejercicio 3
+¿Qué es un Test de Integración?
+
+Son test que comprueban el correcto funcionamiento de los diferentes componentes o capas de la aplicación al momento de interactuar con otros componentes de la misma.
+
+Ejercicio 4
+Indicar las dimensiones de calidad prioritarias en MELI.
+
+Funcionalidad: comprobar que nuestro componente o funcionalidad realiza correctamente su objetivo.
+Rendimiento: que el cumplimiento de su tarea se realiza lo mas rápido posible y con el menor consumo de recursos.
+Fiabilidad: que el código desarrollado sea susceptible a fallos, y que ante ellos sepa responder y seguir su funcionamiento. 
+Seguridad: Que nuestra aplicación no tenga fallos que permitan a usuarios externos con malas intenciones acceder a información sensible de nuestra aplicación.
+Mantenibilidad: el código debe estar correctamente modularizado, que permita su análisis y test para que en caso de errores o adición de funcionalidades se puedan realizar de la manera mas simple posible, 
