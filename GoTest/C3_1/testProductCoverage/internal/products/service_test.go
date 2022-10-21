@@ -20,6 +20,7 @@ func (d *MockStorage) Read(data interface{}) error {
 	*products = d.data
 	return nil
 }
+
 func (d *MockStorage) Write(data interface{}) error {
 	products := data.([]Products)
 	d.data = products

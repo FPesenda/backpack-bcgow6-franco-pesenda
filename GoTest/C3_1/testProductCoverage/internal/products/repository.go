@@ -59,7 +59,7 @@ func (rep *repository) Patch(id int, name string, price float64) (product Produc
 		}
 	}
 	if !update {
-		err = errors.New(fmt.Sprint("No se encontro el elemento ", id, "en la BBDD"))
+		err = errors.New(fmt.Sprint("No se encontro el elemento ", id, " en la BBDD"))
 		return
 	}
 	product = productTemporal

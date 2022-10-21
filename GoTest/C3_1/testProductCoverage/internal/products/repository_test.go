@@ -1,6 +1,7 @@
 package products
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -174,4 +175,33 @@ func TestHappyPatch(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, result)
 	assert.Equal(t, expectedProduct, result)
+}
+
+func TestNotFoundPach(t *testing.T) {
+	//ARANGE
+	data := []Products{
+		{
+			Id:    1,
+			Name:  "Mouse1",
+			Color: "Black1",
+			Code:  "Ms11",
+			Price: 101.5,
+		},
+	}
+	mockStorage := MockStorage{
+		data:     data,
+		errRead:  nil,
+		errWrite: nil,
+	}
+	idToSerch := 2
+	expectedError := fmt.Errorf("No se encontro el elemento 2 en la BBDD")
+	//ACT
+	repository := NewRepository(&mockStorage)
+	_, err := repository.Patch(
+		idToSerch,
+		"nil",
+		0.0,
+	)
+	assert.NotNil(t, err)
+	assert.Equal(t, expectedError, err)
 }
