@@ -28,6 +28,7 @@ func (d DummyDB) Read(data interface{}) error {
 	}
 	return nil
 }
+
 func (d DummyDB) Write(data interface{}) error {
 	return nil
 }
@@ -43,6 +44,7 @@ func (d *MockDB) Read(data interface{}) error {
 	*products = d.data
 	return nil
 }
+
 func (d *MockDB) Write(data interface{}) error {
 	products := data.([]Products)
 	d.data = products
@@ -100,4 +102,41 @@ func TestUpdateName(t *testing.T) {
 	assert.Nil(t, err)
 	assert.True(t, mock.readUSed)
 	assert.Equal(t, dataExpected, updated)
+}
+
+func TestUpdateById(t *testing.T) {
+	//ARANGE
+	data := []Products{
+		{
+			Id:    1,
+			Name:  "Mouse1",
+			Color: "Black1",
+			Code:  "Ms11",
+			Price: 101.5,
+		},
+	}
+	mockStorage := MockStorage{
+		data:     data,
+		errRead:  nil,
+		errWrite: nil,
+	}
+	expectedProduct := Products{
+		Id:    1,
+		Name:  "MouseUpdated",
+		Color: "BlackUpdated",
+		Code:  "MsUpdated",
+		Price: 101.5,
+	}
+	//ACT
+	repository := NewRepository(&mockStorage)
+	result, err := repository.UpdateByID(
+		expectedProduct.Id,
+		expectedProduct.Name,
+		expectedProduct.Color,
+		expectedProduct.Code,
+		expectedProduct.Price,
+	)
+	assert.Nil(t, err)
+	assert.NotNil(t, result)
+	assert.Equal(t, expectedProduct, result)
 }
