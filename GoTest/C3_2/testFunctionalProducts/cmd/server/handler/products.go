@@ -3,7 +3,6 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"strconv"
 
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/internal/products"
@@ -28,7 +27,7 @@ func NewProduct(serv products.Service) *Product {
 }
 
 func tokenValidator(token string, ctx *gin.Context) {
-	if token != os.Getenv("TOKEN") {
+	if token != "123456" {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"error": "token inválido",
 		})

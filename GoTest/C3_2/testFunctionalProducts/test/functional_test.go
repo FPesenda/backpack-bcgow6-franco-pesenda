@@ -3,12 +3,12 @@ package test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/cmd/server/handler"
-	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/internal/domain"
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/internal/products"
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/test/mocks"
 	"github.com/gin-gonic/gin"
@@ -28,7 +28,8 @@ func createServer(mockStore mocks.MockStorage) *gin.Engine {
 	productsRouter := r.Group("/products")
 	{
 		productsRouter.GET("/", product.GetAll())
-		productsRouter.POST("/", product.Store())
+		productsRouter.POST("/:id", product.Store())
+		productsRouter.DELETE("/:id", product.Delete())
 	}
 
 	return r
@@ -47,37 +48,70 @@ func createRequestTest(method, url, body string) (request *http.Request, respons
 func TestHappyUpdate(t *testing.T) {
 	//ARANGE
 	mockStorage := mocks.MockStorage{
-		Data: []domain.Product{
+		Data: []products.Products{
 			{
-				ID:    1,
+				Id:    1,
 				Name:  "Product1",
-				Type:  "Test",
-				Count: 10,
+				Color: "Test",
+				Code:  "10",
 				Price: 10.5,
 			},
 		},
 		ErrWrite: "",
 		ErrRead:  "",
 	}
-	expectedProduct := domain.Product{
-		ID:    1,
+	expectedProduct := products.Products{
+		Id:    1,
 		Name:  "PRD 1 Updated",
-		Type:  "Type Updated",
-		Count: 10,
+		Color: "Type Updated",
+		Code:  "10",
 		Price: 10.5,
 	}
 	router := createServer(mockStorage)
-	request, rr := createRequestTest(http.MethodPost, "/products/", `{
-        "Name": "PRD 1 Updated",
-		"Type": "Type Updated",
-		"Count": 99,
-		"Price": 9.9
+	request, rr := createRequestTest(http.MethodPost, "/products/1",
+		`{
+        "Name":"PRD 1 Updated",
+		"Color":"Type Updated",
+		"Code":"10",
+		"Price":10.5
     }`)
+	var response products.Products
 	//ACT
 	router.ServeHTTP(rr, request)
 	//ASSERT
-	err := json.Unmarshal(rr.Body.Bytes(), &request)
+	err := json.Unmarshal(rr.Body.Bytes(), &response)
 	assert.Nil(t, err)
 	assert.Equal(t, http.StatusCreated, rr.Code)
-	assert.Equal(t, expectedProduct, rr.Body)
+	assert.Equal(t, expectedProduct, response)
+}
+
+func TestDeleteHappy(t *testing.T) {
+	//range
+	data := []products.Products{
+		{
+			Id:    1,
+			Name:  "PRD 1 Updated",
+			Color: "Type Updated",
+			Code:  "10",
+			Price: 10.5,
+		},
+	}
+	mockStorage := mocks.MockStorage{
+		Data:     data,
+		ErrWrite: "",
+		ErrRead:  "",
+	}
+	router := createServer(mockStorage)
+	request, rr := createRequestTest(http.MethodDelete, "/products/1", "")
+	var response map[string]string
+	expectedResponse := map[string]string{
+		"data": fmt.Sprintf("El producto %d a sido eliminado correctamente", data[0].Id),
+	}
+	//act
+	router.ServeHTTP(rr, request)
+	//assert
+	err := json.Unmarshal(rr.Body.Bytes(), &response)
+	assert.Nil(t, err)
+	assert.Equal(t, http.StatusOK, rr.Code)
+	assert.Equal(t, expectedResponse, response)
 }
