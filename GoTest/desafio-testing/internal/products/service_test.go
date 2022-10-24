@@ -12,24 +12,22 @@ import (
 
 func TestGetAllBySellerHappy(t *testing.T) {
 	//ARANGE
-	data := []domain.Product{
+	expectedData := []domain.Product{
 		{
-			ID:          "mock",
+			ID:          "mock1",
 			SellerID:    "FEX112AC",
 			Description: "generic product",
 			Price:       123.55,
 		},
-	}
-	expectedData := []domain.Product{
 		{
-			ID:          "mock",
+			ID:          "mock2",
 			SellerID:    "FEX112AC",
 			Description: "generic product",
-			Price:       123.55,
+			Price:       113.55,
 		},
 	}
 	repository := mock.MockRepository{
-		Data: data,
+		Data: expectedData,
 	}
 	service := NewService(&repository)
 	//ACT
