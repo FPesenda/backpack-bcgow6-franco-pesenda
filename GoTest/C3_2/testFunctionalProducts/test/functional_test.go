@@ -44,7 +44,7 @@ func createRequestTest(method, url, body string) (request *http.Request, respons
 	return
 }
 
-func updateHappyTest(t *testing.T) {
+func TestHappyUpdate(t *testing.T) {
 	//ARANGE
 	mockStorage := mocks.MockStorage{
 		Data: []domain.Product{

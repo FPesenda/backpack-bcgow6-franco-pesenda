@@ -3,7 +3,9 @@ package products
 import (
 	"errors"
 	"fmt"
+
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GOWeb/C3_2/AddStore/pkg/store"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/internal/domain"
 )
 
 type Products struct {
@@ -149,7 +151,7 @@ func (rep *repository) Store(id int, name, color, code string, price float64) (p
 	return p, nil
 }
 
-func (rep *repository) UpdateByID(id int, name, color, code string, price float64) (prod Products, err error) {
+func (rep *repository) UpdateByID(id int, name, color, code string, price float64) (prod domain.Product, err error) {
 	productTemporal := Products{
 		Id:    id,
 		Name:  name,

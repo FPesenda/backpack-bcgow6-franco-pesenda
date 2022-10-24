@@ -1,5 +1,7 @@
 package products
 
+import "github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C3_2/testFunctionalProducts/internal/domain"
+
 type service struct {
 	repository Repository
 }
@@ -53,7 +55,7 @@ func (serv *service) Store(name, color, code string, price float64) (Products, e
 	return producto, nil
 }
 
-func (serv *service) UpdateByID(id int, name, color, code string, price float64) (product Products, err error) {
+func (serv *service) UpdateByID(id int, name, color, code string, price float64) (product domain.Product, err error) {
 	product, err = serv.repository.UpdateByID(id, name, color, code, price)
 	return
 }
