@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GOWeb/C2_2/GenerateInternalPackage/internal/products"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoWeb/C2_2/GenerateInternalPackage/internal/products"
 	"github.com/gin-gonic/gin"
 )
 
