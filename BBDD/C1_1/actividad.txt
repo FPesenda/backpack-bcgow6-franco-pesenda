@@ -1,0 +1,38 @@
+¿Cuáles serían las entidades de este sistema?
+
+Products
+
+Clientes 
+
+Ventas
+
+Stock
+
+¿Qué atributos se determinarán para cada entidad? (Considerar los que se crean necesarios)
+
+Productos:
+	Id
+	Nombre
+	Descripción
+	Precio
+Clientes:
+	Id
+	Nombre
+Ventas
+	Id
+	IdProducto
+	idCliente
+Stock
+	Id
+	IdPro
+	Cantidad
+
+¿Cómo se conformarán las relaciones entre entidades? ¿Cuáles serían las cardinalidades?
+
+Clientes 1 -> n Ventas n <- 1 Productos
+
+Stock 1 -> n Productos
+
+Realizar un DER para modelar el escenario planteado.
+
+/Users/FPESENDA/Documents/DER.png
