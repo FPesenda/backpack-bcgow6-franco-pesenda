@@ -1,0 +1,1 @@
+Esto modelo permite mantener la integridad de los datos, separando datos no claves de una PK que no los representa, separando los datos en 3 entidades diferentes se evita la duplicación de datos, mejor manejo de los datos y obteniendo un esquema mas limpio.
