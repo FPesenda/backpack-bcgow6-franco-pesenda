@@ -1,0 +1,3 @@
+A- El id es la PK de la tabla Clientes porque seria quien la identifica inequívocamente 
+B- El id seria la PK de la tabla packs porque seria quien la identifica inequívocamente
+C- Tienen una relación de uno a muchos, el FK debería estar en Clientes para identificar su pack, haciendo referencia a la PK de pack para identificar que pack tiene el cliente.
