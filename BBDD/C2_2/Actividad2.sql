@@ -36,9 +36,25 @@ DELETE FROM movies_copy mc WHERE mc.awards < 5 ;
 /*Obtener la lista de todos los géneros que tengan al menos una película.*/
 SELECT g.name , m.title FROM genres g
 INNER JOIN movies m ON m.genre_id = g.id ; 
-/*Obtener la lista de actores cuya película favorita haya ganado más de 3 awards.*//*
-Crear un índice sobre el nombre en la tabla movies.*//*
-Chequee que el índice fue creado correctamente.*//*
-En la base de datos movies ¿Existiría una mejora notable al crear índices? Analizar y justificar la respuesta.*//*
-¿En qué otra tabla crearía un índice y por qué? Justificar la respuesta
+/*Obtener la lista de actores cuya película favorita haya ganado más de 3 awards.*/
+SELECT CONCAT(a.first_name , " " , a.last_name) Actores FROM actors a 
+INNER JOIN movies m ON m.id = a.favorite_movie_id
+WHERE m.awards > 3 ;
+/*Crear un índice sobre el nombre en la tabla movies.*/
+CREATE INDEX movie_title ON movies (title) ;
+/*Chequee que el índice fue creado correctamente.*/
+SHOW INDEX FROM movies ;
+/*En la base de datos movies ¿Existiría una mejora notable al crear índices? Analizar y justificar la respuesta.*/
+SELECT * FROM actors ;
+EXPLAIN SELECT * FROM actors a WHERE a.first_name = "Zoe" ;
+SELECT * FROM movies ;
+EXPLAIN SELECT * FROM movies m WHERE m.title = "Titanic" ;
+/*
+La query que utiliza indices analiza muchas menos filas al momento de realizar la consulta, traduciendose en una
+mejor performance al momento de obtener datos.
+*/
+/*¿En qué otra tabla crearía un índice y por qué? Justificar la respuesta
+Creo que los nombres en esta base de datos son buenos candidatos para recibir un indice, como 
+el nombre de las peliculas y de las series ya que es un elemento que se consulta mucho al momento
+de realizar filtros.
 */
