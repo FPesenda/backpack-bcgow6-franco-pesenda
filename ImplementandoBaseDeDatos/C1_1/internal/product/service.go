@@ -3,6 +3,8 @@ package product
 import (
 	"context"
 	"errors"
+
+	"github.com/extmatperez/meli_bootcamp_go_w6-4/internal/domain"
 )
 
 // Errors

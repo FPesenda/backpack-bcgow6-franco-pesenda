@@ -2,6 +2,12 @@ package handler
 
 import (
 	"net/http"
+
+	"github.com/extmatperez/meli_bootcamp_go_w6-4/internal/domain"
+	"github.com/extmatperez/meli_bootcamp_go_w6-4/internal/product"
+	"github.com/extmatperez/meli_bootcamp_go_w6-4/pkg/web"
+	"github.com/extmatperez/meli_bootcamp_go_w6-4/pkg/web/request"
+	"github.com/gin-gonic/gin"
 )
 
 type Product struct {
