@@ -4,10 +4,6 @@ import (
 	"context"
 	"errors"
 	"testing"
-
-	"github.com/extmatperez/meli_bootcamp_go_w6-4/internal/domain"
-	mocks "github.com/extmatperez/meli_bootcamp_go_w6-4/test/mocks/products"
-	"github.com/stretchr/testify/assert"
 )
 
 var ctx context.Context = context.TODO()
