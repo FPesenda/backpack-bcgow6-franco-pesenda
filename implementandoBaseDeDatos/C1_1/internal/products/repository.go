@@ -4,6 +4,7 @@ package products
 import (
 	"database/sql"
 	"fmt"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/domains"
 )
 
 type Repository interface {
