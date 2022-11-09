@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/GoTest/C2_1/testProducts/internal/products"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
