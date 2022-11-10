@@ -1,5 +1,13 @@
 package main
 
+import (
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/cmd/server/handler"
+	cnn "github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/db"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/products"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
+
 func main() {
 	loadEnv()
 

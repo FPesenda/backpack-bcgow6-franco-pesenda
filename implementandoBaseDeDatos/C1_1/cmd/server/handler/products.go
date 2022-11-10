@@ -3,6 +3,11 @@ package handler
 import (
 	"net/http"
 	"strings"
+
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/domains"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/products"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/pkg/web"
+	"github.com/gin-gonic/gin"
 )
 
 type request struct {

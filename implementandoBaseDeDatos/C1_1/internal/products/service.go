@@ -1,5 +1,7 @@
 package products
 
+import "github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/domains"
+
 type Service interface {
 	Store(domains.Product) (int, error)
 	GetByName(name string) (domains.Product, error)

@@ -7,13 +7,21 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/cmd/server/handler"
+	cnn "github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/db"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/domains"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/products"
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/require"
 )
 
 var s = createServer()
 
 func createServer() *gin.Engine {
 	os.Setenv("USERNAME", "root")
-	os.Setenv("PASSWORD", "root")
+	os.Setenv("PASSWORD", "")
 	os.Setenv("DATABASE", "storage")
 
 	db := cnn.MySQLConnection()
