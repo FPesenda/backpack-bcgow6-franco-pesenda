@@ -18,11 +18,12 @@ func main() {
 
 	r := gin.Default()
 	pr := r.Group("/api/v1/products")
-
-	pr.POST("/", p.Store())
-	pr.GET("/", p.GetByName())
-	pr.GET("", p.GetAll())
-	pr.DELETE("/:id", handler.IdValidationMiddleWare(), p.Delete())
+	{
+		pr.POST("/", p.Store())
+		pr.GET("/", p.GetByName())
+		pr.GET("", p.GetAll())
+		pr.DELETE("/:id", handler.IdValidationMiddleWare(), p.Delete())
+	}
 
 	r.Run()
 }

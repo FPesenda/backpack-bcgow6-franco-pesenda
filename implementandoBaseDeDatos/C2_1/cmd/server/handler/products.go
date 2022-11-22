@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -99,7 +100,7 @@ func (s *Product) Delete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.GetInt("id_validated")
 		if !s.service.Exist(id) {
-			ctx.JSON(http.StatusNotFound, web.NewResponse(nil, NOT_FOUND, http.StatusNotFound))
+			ctx.JSON(http.StatusNotFound, web.NewResponse(nil, fmt.Sprint(NOT_FOUND, " ", id), http.StatusNotFound))
 			return
 		}
 
