@@ -56,6 +56,7 @@ func createServer() *gin.Engine {
 	pr.POST("/", p.Store())
 	pr.GET("", p.GetAll())
 	pr.DELETE("/:id", handler.IdValidationMiddleWare(), p.Delete())
+	pr.PUT("/:id", handler.IdValidationMiddleWare(), p.Update())
 
 	return r
 }
@@ -67,7 +68,7 @@ func createRequest(method, url, body string) (*http.Request, *httptest.ResponseR
 	return req, httptest.NewRecorder()
 }
 
-func TestStoreProduct_Ok(t *testing.T) {
+func Test_store_product_ok(t *testing.T) {
 	new := domains.Product{
 		Name:  "producto nuevo",
 		Type:  "producto tipo",
@@ -92,7 +93,7 @@ func TestStoreProduct_Ok(t *testing.T) {
 	assert.Equal(t, new, p.Data)
 }
 
-func TestGetByNameProduct_Ok(t *testing.T) {
+func Test_get_by_name_product_ok(t *testing.T) {
 	req, rr := createRequest(http.MethodGet, "/api/v1/products/", `{"nombre":"producto nuevo"}`)
 	s.ServeHTTP(rr, req)
 
@@ -100,14 +101,14 @@ func TestGetByNameProduct_Ok(t *testing.T) {
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
-func TestGetAllHappy(t *testing.T) {
+func Test_get_all_happy(t *testing.T) {
 	request, response := createRequest(http.MethodGet, "/api/v1/products", "")
 	s.ServeHTTP(response, request)
 
 	assert.Equal(t, http.StatusOK, response.Code)
 }
 
-func TestDelete(t *testing.T) {
+func Test_delete(t *testing.T) {
 	//CREAR PRODUCTO
 	new := domains.Product{
 		Name:  "nuevito",
@@ -154,5 +155,46 @@ func TestDelete(t *testing.T) {
 		}
 		assert.True(t, deleted)
 		assert.Equal(t, http.StatusOK, response.Code)
+	})
+}
+
+func Test_update(t *testing.T) {
+	//CREAR PRODUCTO
+	new := domains.Product{
+		Name:  "nuevito",
+		Type:  "producto tipo",
+		Count: 3,
+		Price: 84.4,
+	}
+
+	product, err := json.Marshal(new)
+	require.Nil(t, err)
+
+	req, resp := createRequest(http.MethodPost, "/api/v1/products/", string(product))
+	s.ServeHTTP(resp, req)
+
+	var p Response
+	err = json.Unmarshal(resp.Body.Bytes(), &p)
+	t.Run("Update ok", func(t *testing.T) {
+		expected := domains.Product{
+			ID:    p.Data.ID,
+			Name:  "ActualizadoMNouse",
+			Type:  "BlackActuall",
+			Count: 19,
+			Price: 101.50,
+		}
+		req, resp := createRequest(http.MethodPut, fmt.Sprint("/api/v1/products/", p.Data.ID),
+			`{
+			"nombre":      	"ActualizadoMNouse",
+			"tipo":     	"BlackActuall",
+			"cantidad":     19,  
+			"precio":      	101.50
+		}`)
+		s.ServeHTTP(resp, req)
+		var response Response
+		err := json.Unmarshal(resp.Body.Bytes(), &response)
+
+		assert.Nil(t, err)
+		assert.Equal(t, expected, response.Data)
 	})
 }

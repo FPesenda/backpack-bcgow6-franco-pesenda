@@ -7,6 +7,7 @@ type Service interface {
 	GetByName(name string) (domains.Product, error)
 	GetAll() ([]domains.Product, error)
 	Delete(id int) error
+	Update(domains.Product) error
 	Exist(id int) bool
 }
 
@@ -32,6 +33,10 @@ func (s *service) GetAll() (products []domains.Product, err error) {
 
 func (s *service) Delete(id int) (err error) {
 	return s.repository.Delete(id)
+}
+
+func (s *service) Update(product domains.Product) (err error) {
+	return s.repository.Update(product)
 }
 
 func (s *service) Exist(id int) bool {

@@ -14,6 +14,7 @@ type Repository interface {
 	GetAll() ([]domains.Product, error)
 	Delete(id int) error
 	Exists(id int) bool
+	Update(domains.Product) error
 }
 
 func NewRepository(db *sql.DB) Repository {
@@ -29,6 +30,7 @@ var (
 	SELECT_ALL     = "SELECT id , name , type , count , price FROM products ;"
 	INSERT_PRODUCT = "INSERT INTO products (name, type, count, price) VALUES (?,?,?,?);"
 	DELETE_BY_ID   = "DELETE FROM products WHERE id =?;"
+	UPDATE         = "UPDATE products SET name=?, type=?, count=?, price=? WHERE id=?;"
 	EXIST          = "SELECT id FROM products WHERE id=?"
 )
 
@@ -36,6 +38,8 @@ var (
 	db_error_unprocesableEntity = errors.New("No se pudo procesar la entidad")
 	db_error_failtConsult       = errors.New("Error creando la consulta")
 	db_error_notFound           = errors.New("Prodcto no encontrado")
+	db_error_fail               = errors.New("Db error fatal")
+	consult_error_no_afected    = errors.New("Consult no afect")
 )
 
 func (r *repository) GetByName(name string) (product domains.Product, err error) {
@@ -174,6 +178,39 @@ func (r *repository) Delete(id int) (err error) {
 	if err != nil {
 		err = db_error_notFound
 		return
+	}
+	return
+}
+
+func (r *repository) Update(product domains.Product) (err error) {
+	statement, err := r.db.Prepare(UPDATE)
+
+	if err != nil {
+		err = db_error_failtConsult
+		return
+	}
+
+	result, err := statement.Exec(
+		product.Name,
+		product.Type,
+		product.Count,
+		product.Price,
+		product.ID,
+	)
+
+	if err != nil {
+		err = db_error_unprocesableEntity
+		return
+	}
+
+	rowsAfected, err := result.RowsAffected()
+
+	if err != nil {
+		return
+	}
+
+	if rowsAfected < 1 {
+		err = consult_error_no_afected
 	}
 	return
 }

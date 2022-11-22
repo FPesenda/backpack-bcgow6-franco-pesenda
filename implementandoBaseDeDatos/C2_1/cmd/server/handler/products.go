@@ -7,17 +7,10 @@ import (
 
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/domains"
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/internal/products"
+	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/pkg/request"
 	"github.com/FPesenda/backpack-bcgow6-franco-pesenda/implementandoBaseDeDatos/C1_1/pkg/web"
 	"github.com/gin-gonic/gin"
 )
-
-type request struct {
-	ID    int     `json:"id"`
-	Name  string  `json:"nombre" binding:"required"`
-	Type  string  `json:"tipo" binding:"required"`
-	Count int     `json:"cantidad" binding:"required"`
-	Price float64 `json:"precio" binding:"required"`
-}
 
 type requestName struct {
 	Name string `json:"nombre" binding:"required"`
@@ -37,7 +30,7 @@ func NewProduct(s products.Service) *Product {
 
 func (s *Product) Store() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req request
+		var req request.Product
 		if err := c.ShouldBindJSON(&req); err != nil {
 			if strings.Contains(err.Error(), "'required' tag") {
 				c.JSON(http.StatusUnprocessableEntity, err.Error())
@@ -48,7 +41,12 @@ func (s *Product) Store() gin.HandlerFunc {
 			return
 		}
 
-		product := domains.Product(req)
+		product := domains.Product(domains.Product{
+			Name:  req.Name,
+			Type:  req.Type,
+			Count: req.Count,
+			Price: req.Price,
+		})
 		id, err := s.service.Store(product)
 		if err != nil {
 			c.JSON(http.StatusConflict, err.Error())
@@ -93,6 +91,41 @@ func (s *Product) GetAll() gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, web.NewResponse(products, "", http.StatusOK))
+	}
+}
+
+func (s *Product) Update() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var product request.Product
+
+		id := ctx.GetInt("id_validated")
+
+		if !s.service.Exist(id) {
+			ctx.JSON(http.StatusNotFound, web.NewResponse(nil, fmt.Sprint("Producto con id ", id, " no enontrado"), http.StatusNotFound))
+			return
+		}
+
+		err := ctx.ShouldBindJSON(&product)
+
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(nil, err.Error(), http.StatusBadRequest))
+			return
+		}
+		productNew := domains.Product{
+			ID:    id,
+			Name:  product.Name,
+			Type:  product.Type,
+			Count: product.Count,
+			Price: product.Price,
+		}
+		err = s.service.Update(productNew)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, web.NewResponse(nil, err.Error(), http.StatusBadRequest))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, web.NewResponse(productNew, "", http.StatusOK))
 	}
 }
 

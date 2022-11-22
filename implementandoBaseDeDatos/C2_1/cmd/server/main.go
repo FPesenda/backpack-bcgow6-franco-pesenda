@@ -23,6 +23,7 @@ func main() {
 		pr.GET("/", p.GetByName())
 		pr.GET("", p.GetAll())
 		pr.DELETE("/:id", handler.IdValidationMiddleWare(), p.Delete())
+		pr.PUT("/:id", handler.IdValidationMiddleWare(), p.Update())
 	}
 
 	r.Run()
